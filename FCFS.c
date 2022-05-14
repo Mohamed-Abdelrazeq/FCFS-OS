@@ -87,7 +87,7 @@ int main()
 		if (bqf != 0)
 		{
 
-			for (int j = 0; j < bqf; j++)
+			for (int j = bqe; j < bqf; j++)
 			{
 
 				if (bq[j].bt != 0)
@@ -100,12 +100,13 @@ int main()
 				else
 				{
 					rq[rqf] = bq[j];
+					printf("THE BUG\n");
+					bqe++;
 					rqf++;
 				}
 
 			}
 		}
-
 
 		// CHECK RFT
 		if (i == rft && rft != 0)
@@ -113,9 +114,8 @@ int main()
 
 			if (current_proccess.bt == 0)
 			{
-				rqe++;
-
 				printf("%D ENDED\n", current_proccess.pid);
+				// rqe++;
 			}
 			else if(!block)
 			{
@@ -123,7 +123,7 @@ int main()
 				bq[bqf].bt = bq[bqf].bt - 1;
 				bqf++;
 
-				printf("%d BLOCKED\n", current_proccess.pid);
+				printf("%d BLOCKED ", current_proccess.pid);
 			}
 			is_running = 0;
 
@@ -141,7 +141,10 @@ int main()
 			}
 		}
 
-	
+		// TEST
+		printf("rqe = %d\n",rqe);
+		printf("rqf = %d\n",rqf);
+
 		// CHECK RQ
 		if (rqf != 0 && rqf != rqe)
 		{
@@ -152,15 +155,21 @@ int main()
 				struct process_struct temp[rqf - rqe];
 				for (int k = 0; k < rqf - rqe; k++)
 				{
-					temp[k] = rq[k];
+					temp[k] = rq[rqe + k];
 				}
 
 				qsort((void *)temp, rqf - rqe, sizeof(struct process_struct), comparatorPID);
 
 				// TEST
+
 				for (int k = 0; k < rqf-rqe; k++)
 				{
-					printf("TEST %d \n", temp[k].pid);
+					printf("TEMP %d \n", temp[k].pid);
+				}
+
+				for (int k = 0; k < 10; k++)
+				{
+					printf("RQ %d \n", rq[k].pid);
 				}
 
 				printf("%d  STARTED RUNNING\n", temp[0].pid);
