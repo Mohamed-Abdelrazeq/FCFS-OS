@@ -149,6 +149,7 @@ int main()
 				for (int k = 0; k < rqf - rqe; k++)
 				{
 					temp[k] = rq[rqe + k];
+					if (k != 0) printf("%d: READY ",rq[k + rqe].pid);
 				}
 
 				qsort((void *)temp, rqf - rqe, sizeof(struct process_struct), comparatorPID);
