@@ -72,6 +72,8 @@ int main()
 		// SCAN ARRIVAL TIME
 		scanf("%d", &ps[i].at);
 	}
+	
+	
 	// LOGIC
 	for (int i = 0; i < 10; i++)
 	{
@@ -100,6 +102,7 @@ int main()
 					rq[rqf] = bq[j];
 					rqf++;
 				}
+
 			}
 		}
 
@@ -110,17 +113,20 @@ int main()
 
 			if (current_proccess.bt == 0)
 			{
-				is_running = 0;
-				printf("%D ENDED\n", current_proccess.pid);
 				rqe++;
+
+				printf("%D ENDED\n", current_proccess.pid);
 			}
 			else if(!block)
 			{
 				bq[bqf] = current_proccess;
-				is_running = 0;
-				printf("%d BLOCKED\n", current_proccess.pid);
+				bq[bqf].bt = bq[bqf].bt - 1;
 				bqf++;
+
+				printf("%d BLOCKED\n", current_proccess.pid);
 			}
+			is_running = 0;
+
 		}
 
 		// CHECK AT
@@ -143,7 +149,6 @@ int main()
 			if (!is_running)
 			{
 
-				printf("CONFLICT\n");
 				struct process_struct temp[rqf - rqe];
 				for (int k = 0; k < rqf - rqe; k++)
 				{
