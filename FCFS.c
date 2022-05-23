@@ -147,7 +147,10 @@ int main()
 			if (is_running)
 			{
 				printf("%d: RUNNING ", current_proccess.pid);
-				
+				for (int k = 0; k < rqf - rqe; k++)
+				{
+					printf("%d: READY ",rq[k + rqe].pid);
+				}
 			}
 
 			if (!is_running && rqf != rqe)
@@ -160,7 +163,7 @@ int main()
 				for (int k = 0; k < rqf - rqe; k++)
 				{
 					temp[k] = rq[rqe + k];
-					if (k != 0) printf("%d: READY ",rq[k + rqe].pid);
+					// if (k != 0) printf("%d: READY ",rq[k + rqe].pid);
 				}
 
 				qsort((void *)temp, rqf - rqe, sizeof(struct process_struct), comparatorPID);
@@ -168,7 +171,7 @@ int main()
 				for (int k = 0; k < rqf - rqe; k++)
 				{
 					rq[rqe + k] = temp[k];
-					// if (k != 0) printf("%d: READY ",rq[k + rqe].pid);
+					if (k != 0) printf("%d: READY ",rq[k + rqe].pid);
 				}
 
 				printf("%d: RUNNING ", temp[0].pid);
