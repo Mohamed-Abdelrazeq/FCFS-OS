@@ -9,7 +9,7 @@ struct process_struct
 	int pt; // CPU Burst time
 	int bt;
 	int ct, wt, tat, rt, start_time; // Completion, waiting, turnaround, response time
-} ps[100], rq[10], bq[100], current_proccess;
+} ps[100], rq[30], bq[100], current_proccess;
 
 // FUNCTIONS
 int findmax(int a, int b)
@@ -56,7 +56,7 @@ int main()
 	scanf("%d", &n);
 
 	// DEFAULT VALUES
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 30; i++)
 	{
 		rq[i].pid = 999;
 	}
@@ -75,7 +75,7 @@ int main()
 	
 	
 	// LOGIC
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 30; i++)
 	{
 
 		int block = 0;
@@ -87,6 +87,8 @@ int main()
 		if (bqf != 0)
 		{
 
+			// printf("bqe %d ", bqf);
+			// printf("bqf %d ", bqf);
 			for (int j = bqe; j < bqf; j++)
 			{
 
@@ -94,7 +96,7 @@ int main()
 				{
 					bq[j].bt = bq[j].bt - 1;
 					printf("%d: BLOCKED ", bq[j].pid);
-					block=1;
+					// block=1;
 				}
 
 				else
@@ -131,7 +133,7 @@ int main()
 		// CHECK AT
 		for (int k = 0; k < n; k++)
 		{
-			if (ps[k].at == i)
+			if (ps[k].at == i && ps[k].pt != 0)
 			{
 				rq[rqf] = ps[k];
 				rqf++;
@@ -139,12 +141,21 @@ int main()
 		}
 
 		// CHECK RQ
-		if (rqf != 0 && rqf != rqe)
+		if (rqf != 0)
 		{
 
-			if (!is_running)
+			if (is_running)
+			{
+				printf("%d: RUNNING ", current_proccess.pid);
+				
+			}
+
+			if (!is_running && rqf != rqe)
 			{
 
+				// printf("rqf %d\n",rqf);
+				// printf("rqe %d\n",rqe);
+				
 				struct process_struct temp[rqf - rqe];
 				for (int k = 0; k < rqf - rqe; k++)
 				{
@@ -154,16 +165,20 @@ int main()
 
 				qsort((void *)temp, rqf - rqe, sizeof(struct process_struct), comparatorPID);
 
+				for (int k = 0; k < rqf - rqe; k++)
+				{
+					rq[rqe + k] = temp[k];
+					// if (k != 0) printf("%d: READY ",rq[k + rqe].pid);
+				}
+
 				printf("%d: RUNNING ", temp[0].pid);
 				rft = i + temp[0].pt;
 				is_running = 1;
 				current_proccess = temp[0];
 				rqe++;
 			}
-			else
-			{
-				printf("%d: RUNNING ", current_proccess.pid);
-			}
+			
+			
 		}
 	}
 
